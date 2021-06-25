@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Populator
   # Builds multiple Populator::Record instances and saves them to the database
   class Factory
