@@ -7,7 +7,7 @@ class MoviesController < ApplicationController
     if found_movie
       render json: found_movie
     else
-      CreateMovieWorker.perform_async
+      CreateMovieWorker.perform_async(params[:title])
       render json: { error: 'Provided title was not found, please try again later ;)' }.to_json, status: :not_found
     end
   end
