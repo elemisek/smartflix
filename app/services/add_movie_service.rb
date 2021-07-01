@@ -1,30 +1,38 @@
 # frozen_string_literal: true
 
-require 'net/http'
-require 'uri'
-require 'json'
+require 'httparty'
+
 class AddMovieService
 
-  OMDBAPI_KEY = Rails.application.credentials.omdb[:key]
-  BASE_URI = 'https://www.omdbapi.com/?'
-  def perform(title)
-    request_uri = build_uri(title)
-    res = Net::HTTP.get_response(request_uri)
-    create_if_success(res) if res.is_a?(Net::HTTPSuccess)
+  include HTTParty
+  base_uri 'https://www.omdbapi.com/?'
+
+  def initialize
+    @omdb_api_key = { query: { apikey: Rails.application.credentials.omdbapi[:key] } }
+  end
+
+  def get_by_title(title:)
+    response = JSON.parse(self.class.get("t=#{title}", omdb_api_key).body)
+    create_movie(response: response)
+  end
+
+  def get_by_title_and_year(title:, year:)
+    response = JSON.parse(self.class.get("t=#{title}&y=#{year}", omdb_api_key).body)
+    create_movie(response: response)
+  end
+
+  def get_by_id(id:)
+    response = JSON.parse(self.class.get("i=#{id}", omdb_api_key).body)
+    create_movie(response: response)
+  end
+
+  def create_movie(response:)
+    Movie.create!(title: response['Title']) if response['Response'] == 'True'
   end
 
   private
 
-  def build_uri(title)
-    params = { apikey: OMDBAPI_KEY, t: title }
-    uri = URI('https://www.omdbapi.com/?')
-    uri.query = URI.encode_www_form(params)
-    uri
-  end
+  attr_reader :omdb_api_key
 
-  def create_if_success(response)
-    data = JSON.parse(response.body)
-    Movie.create(Title: data['Title']) if data['Response'] == 'True'
-  end
 
 end
