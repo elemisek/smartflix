@@ -33,8 +33,15 @@ gem 'sidekiq'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'database_cleaner'
+  gem 'factory_bot'
   gem 'faker'
   gem 'populator'
+  gem 'rspec-rails'
+  gem 'rubocop-rails'
+  gem 'rubocop-rspec'
+  gem 'vcr'
+  gem 'webmock'
 end
 
 group :development do
@@ -45,7 +52,7 @@ group :development do
   gem 'listen', '~> 3.3'
   gem 'rack-mini-profiler', '~> 2.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'rubocop-rails'
+
   gem 'spring'
 end
 
