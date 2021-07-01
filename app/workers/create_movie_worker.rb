@@ -6,8 +6,12 @@ class CreateMovieWorker
   include Sidekiq::Worker
   sidekiq_options queue: 'movies', retry: false
 
-  def perform(* _args)
-    Movie.create!(title: Faker::Movie.title)
+  def perform(title:)
+    api.get_by_title(title: title)
+  end
+
+  def api
+    @api ||= AddMovieService.new
   end
 
 end

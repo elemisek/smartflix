@@ -34,5 +34,4 @@ class AddMovieService
 
   attr_reader :omdb_api_key
 
-
 end
