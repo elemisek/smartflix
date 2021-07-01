@@ -38,6 +38,7 @@ group :development, :test do
   gem 'faker'
   gem 'populator'
   gem 'rspec-rails'
+  gem 'rubocop'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
   gem 'vcr'

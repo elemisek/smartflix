@@ -4,6 +4,7 @@ require 'net/http'
 require 'uri'
 require 'json'
 class AddMovieService
+
   OMDBAPI_KEY = Rails.application.credentials.omdb[:key]
   BASE_URI = 'https://www.omdbapi.com/?'
   def perform(title)
@@ -25,4 +26,5 @@ class AddMovieService
     data = JSON.parse(response.body)
     Movie.create(Title: data['Title']) if data['Response'] == 'True'
   end
+
 end
